@@ -1,0 +1,40 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def
+    restAssuredVersion = '6.0.0',
+    junitVersion = '6.0.3',
+    slf4jVersion = '2.0.18',
+    assertjVersion = '3.27.7',
+    lombokVersion = '1.18.46'
+
+dependencies {
+    testImplementation (
+            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+            "org.slf4j:slf4j-api:$slf4jVersion",
+            "io.rest-assured:rest-assured:$restAssuredVersion",
+            "org.assertj:assertj-core:$assertjVersion",
+            "org.projectlombok:lombok:$lombokVersion"
+    )
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
