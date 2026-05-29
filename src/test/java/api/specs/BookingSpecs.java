@@ -12,25 +12,25 @@ import static io.restassured.http.ContentType.JSON;
 
 public class BookingSpecs {
 
-    public static RequestSpecification getBookingRequestSpec = with()
+    public static RequestSpecification bookingWithoutTokenRequestSpec = with()
             .filter(new AllureLoggerFilter())
             .log().method()
             .log().uri()
             .log().headers();
 
-    public static ResponseSpecification getBookingResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification successfulBookingResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(200)
             .build();
 
-    public static ResponseSpecification getNotFoundBookingResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification notFoundBookingResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(404)
             .build();
 
-    public static RequestSpecification deleteBookingRequestSpec = with()
+    public static RequestSpecification bookingWithTokenRequestSpec = with()
             .filter(new AllureLoggerFilter())
             .contentType(JSON)
             .header("Cookie", "token=" + new UsefulMethodsForTests().createToken())
@@ -38,7 +38,7 @@ public class BookingSpecs {
             .log().uri()
             .log().headers();
 
-    public static ResponseSpecification deleteBookingResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification createdStatusBookingResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(201)

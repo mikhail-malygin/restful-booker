@@ -6,7 +6,7 @@ import models.lombok.ResponseBookingDTO;
 import models.lombok.ResponseTokenDTO;
 
 import static api.specs.BookingSpecs.*;
-import static api.specs.BookingSpecs.getBookingResponseSpec;
+import static api.specs.BookingSpecs.successfulBookingResponseSpec;
 import static api.specs.TokenSpecs.getTokenRequestSpec;
 import static api.specs.TokenSpecs.getTokenResponseSpec;
 import static io.restassured.RestAssured.given;
@@ -47,20 +47,20 @@ public class UsefulMethodsForTests {
     public void deleteBooking(Integer id) {
 
         given()
-                .spec(deleteBookingRequestSpec)
+                .spec(bookingWithTokenRequestSpec)
                 .when()
                 .delete("/booking/" + id)
                 .then()
-                .spec(deleteBookingResponseSpec);
+                .spec(createdStatusBookingResponseSpec);
     }
 
     public void getBookingById(Integer id) {
         given()
-                .spec(getBookingRequestSpec)
+                .spec(bookingWithoutTokenRequestSpec)
                 .when()
                 .get("/booking/" + id)
                 .then()
-                .spec(getBookingResponseSpec);
+                .spec(successfulBookingResponseSpec);
     }
 }
 

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static api.specs.BookingSpecs.*;
-import static api.specs.BookingSpecs.deleteBookingResponseSpec;
+import static api.specs.BookingSpecs.createdStatusBookingResponseSpec;
 import static api.specs.TokenSpecs.getTokenRequestSpec;
 import static api.specs.TokenSpecs.getTokenResponseSpec;
 import static io.qameta.allure.Allure.step;
@@ -62,11 +62,11 @@ public class RestfulBookingTests extends TestBase {
 
         ResponseBookingsIdsDTO[] response = step("Make request get all bookings", () ->
                 given()
-                        .spec(getBookingRequestSpec)
+                        .spec(bookingWithoutTokenRequestSpec)
                         .when()
                         .get("/booking")
                         .then()
-                        .spec(getBookingResponseSpec)
+                        .spec(successfulBookingResponseSpec)
                         .extract().as(ResponseBookingsIdsDTO[].class));
 
         step("Check response get all bookings", () ->
@@ -100,13 +100,13 @@ public class RestfulBookingTests extends TestBase {
 
             ResponseBookingsIdsDTO[] response = step("Make request get bookings by first name", () ->
                     given()
-                            .spec(getBookingRequestSpec)
+                            .spec(bookingWithoutTokenRequestSpec)
                             .queryParam("firstname", bookingsOneUser.getFirst().getFirstname())
                             .queryParam("lastname", bookingsOneUser.getFirst().getLastname())
                             .when()
                             .get("/booking")
                             .then()
-                            .spec(getBookingResponseSpec)
+                            .spec(successfulBookingResponseSpec)
                             .extract().as(ResponseBookingsIdsDTO[].class));
 
             step("Check response get bookings by first name", () -> {
@@ -133,7 +133,7 @@ public class RestfulBookingTests extends TestBase {
     @Test
     @Tag("GetBookings")
     @Tag("PositiveTests")
-    @DisplayName("Returns booking by id")
+    @DisplayName("Returns a booking by id")
     @Description("Returns a specific booking based upon the booking id provided")
     public void shouldReturnBookingByFilterId() {
 
@@ -160,11 +160,11 @@ public class RestfulBookingTests extends TestBase {
 
             BookingDTO response = step("Make request get booking by id", () ->
                     given()
-                            .spec(getBookingRequestSpec)
+                            .spec(bookingWithoutTokenRequestSpec)
                             .when()
                             .get("/booking/" + finalId)
                             .then()
-                            .spec(getBookingResponseSpec)
+                            .spec(successfulBookingResponseSpec)
                             .extract().as(BookingDTO.class));
 
             step("Check response get booking by id", () -> {
@@ -234,6 +234,83 @@ public class RestfulBookingTests extends TestBase {
     }
 
     @Test
+    @Tag("UpdateBookings")
+    @Tag("PositiveTests")
+    @DisplayName("Full updates a current booking")
+    @Description("Full updates a current booking")
+    public void shouldFullUpdateBooking() {
+
+        BookingDataGenerator bookingDataInitial = new BookingDataGenerator();
+        BookingDataGenerator bookingDataUpdated = new BookingDataGenerator();
+        BookingDTO bookingInitial = bookingDataInitial.generateDataForBooking();
+        BookingDTO bookingUpdated = bookingDataUpdated.generateDataForBooking();
+        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        Integer idCreatedBooking = 0;
+
+        try {
+
+            ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
+                    given()
+                            .spec(createBookingRequestSpec)
+                            .body(bookingInitial)
+                            .when()
+                            .post("/booking")
+                            .then()
+                            .spec(createBookingResponseSpec)
+                            .extract()
+                            .as(ResponseBookingDTO.class));
+
+            idCreatedBooking = responseCreatedBooking.getBookingid();
+            Integer finalId = idCreatedBooking;
+
+            BookingDTO responseUpdatedBooking = step("Full updates a booking", () ->
+                    given()
+                            .spec(bookingWithTokenRequestSpec)
+                            .body(bookingUpdated)
+                            .when()
+                            .put("/booking/" + finalId)
+                            .then()
+                            .spec(successfulBookingResponseSpec)
+                            .extract().as(BookingDTO.class));
+
+            step("Check response full update a booking", () -> {
+                assertThat(responseUpdatedBooking.getFirstname()).isEqualTo(bookingUpdated.getFirstname());
+                assertThat(responseUpdatedBooking.getLastname()).isEqualTo(bookingUpdated.getLastname());
+                assertThat(responseUpdatedBooking.getTotalprice()).isEqualTo(bookingUpdated.getTotalprice());
+                assertThat(responseUpdatedBooking.getDepositpaid()).isEqualTo(bookingUpdated.getDepositpaid());
+                assertThat(responseUpdatedBooking.getBookingdates().getCheckin()).isEqualTo(bookingUpdated.getBookingdates().getCheckin());
+                assertThat(responseUpdatedBooking.getBookingdates().getCheckout()).isEqualTo(bookingUpdated.getBookingdates().getCheckout());
+                assertThat(responseUpdatedBooking.getAdditionalneeds()).isEqualTo(bookingUpdated.getAdditionalneeds());
+            });
+
+            BookingDTO getResponse = step("Make request get updated booking by id", () ->
+                    given()
+                            .spec(bookingWithoutTokenRequestSpec)
+                            .when()
+                            .get("/booking/" + finalId)
+                            .then()
+                            .spec(successfulBookingResponseSpec)
+                            .extract().as(BookingDTO.class));
+
+            step("Check current values response get updated booking by id", () -> {
+                assertThat(getResponse.getFirstname()).isEqualTo(bookingUpdated.getFirstname());
+                assertThat(getResponse.getLastname()).isEqualTo(bookingUpdated.getLastname());
+                assertThat(getResponse.getTotalprice()).isEqualTo(bookingUpdated.getTotalprice());
+                assertThat(getResponse.getDepositpaid()).isEqualTo(bookingUpdated.getDepositpaid());
+                assertThat(getResponse.getBookingdates().getCheckin()).isEqualTo(bookingUpdated.getBookingdates().getCheckin());
+                assertThat(getResponse.getBookingdates().getCheckout()).isEqualTo(bookingUpdated.getBookingdates().getCheckout());
+                assertThat(getResponse.getAdditionalneeds()).isEqualTo(bookingUpdated.getAdditionalneeds());
+            });
+
+        } finally {
+            Integer finalId = idCreatedBooking;
+            step("Clean up created test data", () ->
+                    usefulMethod.deleteBooking(finalId)
+            );
+        }
+    }
+
+    @Test
     @Tag("DeleteBookings")
     @Tag("PositiveTests")
     @DisplayName("Deletes a booking")
@@ -261,19 +338,19 @@ public class RestfulBookingTests extends TestBase {
 
         step("Deletes a created booking", () ->
                 given()
-                        .spec(deleteBookingRequestSpec)
+                        .spec(bookingWithTokenRequestSpec)
                         .when()
                         .delete("/booking/" + response.getBookingid())
                         .then()
-                        .spec(deleteBookingResponseSpec));
+                        .spec(createdStatusBookingResponseSpec));
 
         step("Check the deleted booking is not exist", () ->
                 given()
-                        .spec(getBookingRequestSpec)
+                        .spec(bookingWithoutTokenRequestSpec)
                         .when()
                         .get("/booking/" + response.getBookingid())
                         .then()
-                        .spec(getNotFoundBookingResponseSpec)
+                        .spec(notFoundBookingResponseSpec)
         );
     }
 
