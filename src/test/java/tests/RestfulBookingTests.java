@@ -311,6 +311,83 @@ public class RestfulBookingTests extends TestBase {
     }
 
     @Test
+    @Tag("UpdateBookings")
+    @Tag("PositiveTests")
+    @DisplayName("Partial updates a current booking by price and booking dates")
+    @Description("Updates a current booking with a partial payload: price and booking dates")
+    public void shouldPartialUpdatePriceAndDatesBooking() {
+
+        BookingDataGenerator bookingDataInitial = new BookingDataGenerator();
+        BookingDataGenerator bookingDataPatch = new BookingDataGenerator();
+        BookingDTO bookingInitial = bookingDataInitial.generateDataForBooking();
+        BookingDTO bookingPatch = bookingDataPatch.partialUpdateBookingByPriceAndBookingDates();
+        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        Integer idCreatedBooking = 0;
+
+        try {
+
+            ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
+                    given()
+                            .spec(createBookingRequestSpec)
+                            .body(bookingInitial)
+                            .when()
+                            .post("/booking")
+                            .then()
+                            .spec(createBookingResponseSpec)
+                            .extract()
+                            .as(ResponseBookingDTO.class));
+
+            idCreatedBooking = responseCreatedBooking.getBookingid();
+            Integer finalId = idCreatedBooking;
+
+            BookingDTO responseUpdatedBooking = step("Partial updates a booking", () ->
+                    given()
+                            .spec(bookingWithTokenRequestSpec)
+                            .body(bookingPatch)
+                            .when()
+                            .patch("/booking/" + finalId)
+                            .then()
+                            .spec(successfulBookingResponseSpec)
+                            .extract().as(BookingDTO.class));
+
+            step("Check response partial update a booking", () -> {
+                assertThat(responseUpdatedBooking.getFirstname()).isEqualTo(bookingInitial.getFirstname());
+                assertThat(responseUpdatedBooking.getLastname()).isEqualTo(bookingInitial.getLastname());
+                assertThat(responseUpdatedBooking.getTotalprice()).isEqualTo(bookingPatch.getTotalprice());
+                assertThat(responseUpdatedBooking.getDepositpaid()).isEqualTo(bookingInitial.getDepositpaid());
+                assertThat(responseUpdatedBooking.getBookingdates().getCheckin()).isEqualTo(bookingPatch.getBookingdates().getCheckin());
+                assertThat(responseUpdatedBooking.getBookingdates().getCheckout()).isEqualTo(bookingPatch.getBookingdates().getCheckout());
+                assertThat(responseUpdatedBooking.getAdditionalneeds()).isEqualTo(bookingInitial.getAdditionalneeds());
+            });
+
+            BookingDTO getResponse = step("Make request get updated booking by id", () ->
+                    given()
+                            .spec(bookingWithoutTokenRequestSpec)
+                            .when()
+                            .get("/booking/" + finalId)
+                            .then()
+                            .spec(successfulBookingResponseSpec)
+                            .extract().as(BookingDTO.class));
+
+            step("Check current values response get updated booking by id", () -> {
+                assertThat(getResponse.getFirstname()).isEqualTo(bookingInitial.getFirstname());
+                assertThat(getResponse.getLastname()).isEqualTo(bookingInitial.getLastname());
+                assertThat(getResponse.getTotalprice()).isEqualTo(bookingPatch.getTotalprice());
+                assertThat(getResponse.getDepositpaid()).isEqualTo(bookingInitial.getDepositpaid());
+                assertThat(getResponse.getBookingdates().getCheckin()).isEqualTo(bookingPatch.getBookingdates().getCheckin());
+                assertThat(getResponse.getBookingdates().getCheckout()).isEqualTo(bookingPatch.getBookingdates().getCheckout());
+                assertThat(getResponse.getAdditionalneeds()).isEqualTo(bookingInitial.getAdditionalneeds());
+            });
+
+        } finally {
+            Integer finalId = idCreatedBooking;
+            step("Clean up created test data", () ->
+                    usefulMethod.deleteBooking(finalId)
+            );
+        }
+    }
+
+    @Test
     @Tag("DeleteBookings")
     @Tag("PositiveTests")
     @DisplayName("Deletes a booking")

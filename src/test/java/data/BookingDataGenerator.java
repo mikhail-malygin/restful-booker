@@ -32,6 +32,18 @@ public class BookingDataGenerator {
                 .build();
     }
 
+    public BookingDTO partialUpdateBookingByPriceAndBookingDates() {
+
+        return BookingDTO.builder()
+                .totalprice(faker.number().numberBetween(50, 2000))
+                .bookingdates(BookingDTO.Bookingdates.builder()
+                        .checkin(faker.timeAndDate().future(60, 30, TimeUnit.DAYS, datePattern))
+                        .checkout(faker.timeAndDate().future(70, 31, TimeUnit.DAYS, datePattern))
+                        .build())
+                .build();
+    }
+
+
     public BookingDTO generateDataBookingForOneUser() {
 
         return BookingDTO.builder()
