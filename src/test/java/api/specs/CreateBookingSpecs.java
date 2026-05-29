@@ -1,6 +1,6 @@
-package specs;
+package api.specs;
 
-import helpers.AllureLoggerFilter;
+import api.helpers.AllureLoggerFilter;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -15,10 +15,10 @@ public class CreateBookingSpecs {
     public static RequestSpecification createBookingRequestSpec = with()
             .filter(new AllureLoggerFilter())
             .contentType(JSON)
+            .log().method()
             .log().uri()
             .log().headers()
             .log().body();
-
 
     public static ResponseSpecification createBookingResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)

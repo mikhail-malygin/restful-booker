@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RequestBodyCreateBooking {
+public class RequestBookingDTO {
 
     private String firstname;
     private String lastname;

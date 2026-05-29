@@ -1,4 +1,4 @@
-package restfulBooker;
+package tests;
 
 
 import io.restassured.RestAssured;

@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseBodyBookings {
+public class ResponseTokenDTO {
 
-    private Integer bookingid;
-
+    private String token;
 }
