@@ -24,6 +24,12 @@ public class BookingSpecs {
             .expectStatusCode(200)
             .build();
 
+    public static ResponseSpecification getNotFoundBookingResponseSpec = new ResponseSpecBuilder()
+            .log(STATUS)
+            .log(BODY)
+            .expectStatusCode(404)
+            .build();
+
     public static RequestSpecification deleteBookingRequestSpec = with()
             .filter(new AllureLoggerFilter())
             .contentType(JSON)
