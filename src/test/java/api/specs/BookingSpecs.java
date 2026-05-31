@@ -1,7 +1,7 @@
 package api.specs;
 
 import api.helpers.AllureLoggerFilter;
-import api.usefulMethods.UsefulMethodsForTests;
+import api.clients.BookingClients;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -33,7 +33,7 @@ public class BookingSpecs {
     public static RequestSpecification bookingWithTokenRequestSpec = with()
             .filter(new AllureLoggerFilter())
             .contentType(JSON)
-            .header("Cookie", "token=" + new UsefulMethodsForTests().createToken())
+            .header("Cookie", "token=" + new BookingClients().createToken())
             .log().method()
             .log().uri()
             .log().headers();

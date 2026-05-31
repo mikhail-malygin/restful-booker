@@ -1,13 +1,11 @@
 package tests;
 
-import api.usefulMethods.UsefulMethodsForTests;
+import api.clients.BookingClients;
 import data.BookingDataGenerator;
-import data.TokenData;
 import io.qameta.allure.Description;
 import models.lombok.BookingDTO;
 import models.lombok.ResponseBookingsIdsDTO;
 import models.lombok.ResponseBookingDTO;
-import models.lombok.ResponseTokenDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -15,16 +13,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static api.specs.BookingSpecs.*;
-import static api.specs.BookingSpecs.createdStatusBookingResponseSpec;
-import static api.specs.TokenSpecs.getTokenRequestSpec;
-import static api.specs.TokenSpecs.getTokenResponseSpec;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static api.specs.CreateBookingSpecs.createBookingRequestSpec;
-import static api.specs.CreateBookingSpecs.createBookingResponseSpec;
 
 public class RestfulBookingTests extends TestBase {
 
@@ -34,23 +25,12 @@ public class RestfulBookingTests extends TestBase {
     @DisplayName("Creates a new auth token")
     @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
     public void shouldReturnCreatedToken() {
+        BookingClients bookingClients = new BookingClients();
 
-        TokenData token = new TokenData();
-        token.generateToken();
-
-        ResponseTokenDTO response = step("Make a request creates a new token", () ->
-                given()
-                        .spec(getTokenRequestSpec)
-                        .body(token)
-                        .when()
-                        .post("/auth")
-                        .then()
-                        .spec(getTokenResponseSpec)
-                        .extract()
-                        .as(ResponseTokenDTO.class));
+        String response = step("Make a request creates a new token", bookingClients::createToken);
 
         step("Check a response creates a new token", () ->
-                assertThat(response.getToken()).isNotNull());
+                assertThat(response).isNotNull());
     }
 
     @Test
@@ -59,15 +39,9 @@ public class RestfulBookingTests extends TestBase {
     @DisplayName("Returns all bookings ids")
     @Description("Returns the ids of all the bookings that exist within the API")
     public void shouldReturnAllBookings() {
+        BookingClients bookingClients = new BookingClients();
 
-        ResponseBookingsIdsDTO[] response = step("Make request get all bookings", () ->
-                given()
-                        .spec(bookingWithoutTokenRequestSpec)
-                        .when()
-                        .get("/booking")
-                        .then()
-                        .spec(successfulBookingResponseSpec)
-                        .extract().as(ResponseBookingsIdsDTO[].class));
+        ResponseBookingsIdsDTO[] response = step("Make request get all bookings", bookingClients::getAllBookings);
 
         step("Check response get all bookings", () ->
                 assertThat(response[0].getBookingid()).isNotNull());
@@ -82,10 +56,9 @@ public class RestfulBookingTests extends TestBase {
 
         BookingDataGenerator bookingDataGenerator = new BookingDataGenerator();
         Integer numbersOfBookings = bookingDataGenerator.getNumberOfBookings();
-
         List<BookingDTO> bookingsOneUser = new ArrayList<>();
         List<Integer> ids = new ArrayList<>();
-        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        BookingClients bookingClients = new BookingClients();
 
         try {
             for (int i = 0; i < numbersOfBookings; i++) {
@@ -94,20 +67,13 @@ public class RestfulBookingTests extends TestBase {
 
             step("Create a new booking for test", () -> {
                 for (BookingDTO element : bookingsOneUser) {
-                    usefulMethod.createNewBooking(element);
+                    bookingClients.createNewBooking(element);
                 }
             });
 
-            ResponseBookingsIdsDTO[] response = step("Make request get bookings by first name", () ->
-                    given()
-                            .spec(bookingWithoutTokenRequestSpec)
-                            .queryParam("firstname", bookingsOneUser.getFirst().getFirstname())
-                            .queryParam("lastname", bookingsOneUser.getFirst().getLastname())
-                            .when()
-                            .get("/booking")
-                            .then()
-                            .spec(successfulBookingResponseSpec)
-                            .extract().as(ResponseBookingsIdsDTO[].class));
+            ResponseBookingsIdsDTO[] response = step("Make request get bookings by full name", () ->
+                   bookingClients.getBookingsByFullName(bookingsOneUser.getFirst().getFirstname(),
+                           bookingsOneUser.getFirst().getLastname()));
 
             step("Check response get bookings by first name", () -> {
                 assertThat(response.length).isEqualTo(numbersOfBookings);
@@ -124,7 +90,7 @@ public class RestfulBookingTests extends TestBase {
         } finally {
             step("Clean up created test data", () -> {
                 for (Integer id : ids) {
-                    usefulMethod.deleteBooking(id);
+                    bookingClients.deleteBooking(id);
                 }
             });
         }
@@ -139,33 +105,19 @@ public class RestfulBookingTests extends TestBase {
 
         BookingDataGenerator bookingDataGenerator = new BookingDataGenerator();
         BookingDTO booking = bookingDataGenerator.generateDataForBooking();
-        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        BookingClients bookingClients = new BookingClients();
         Integer idCreatedBooking = 0;
 
         try {
 
             ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
-                    given()
-                            .spec(createBookingRequestSpec)
-                            .body(booking)
-                            .when()
-                            .post("/booking")
-                            .then()
-                            .spec(createBookingResponseSpec)
-                            .extract()
-                            .as(ResponseBookingDTO.class));
+                    bookingClients.createNewBooking(booking));
 
             idCreatedBooking = responseCreatedBooking.getBookingid();
             Integer finalId = idCreatedBooking;
 
             BookingDTO response = step("Make request get booking by id", () ->
-                    given()
-                            .spec(bookingWithoutTokenRequestSpec)
-                            .when()
-                            .get("/booking/" + finalId)
-                            .then()
-                            .spec(successfulBookingResponseSpec)
-                            .extract().as(BookingDTO.class));
+                    bookingClients.getBookingById(finalId));
 
             step("Check response get booking by id", () -> {
                 assertThat(response.getFirstname()).isEqualTo(booking.getFirstname());
@@ -180,7 +132,7 @@ public class RestfulBookingTests extends TestBase {
         } finally {
             Integer finalId = idCreatedBooking;
             step("Clean up created test data", () ->
-                    usefulMethod.deleteBooking(finalId)
+                    bookingClients.deleteBooking(finalId)
             );
         }
     }
@@ -194,21 +146,13 @@ public class RestfulBookingTests extends TestBase {
 
         BookingDataGenerator bookingDataGenerator = new BookingDataGenerator();
         BookingDTO booking = bookingDataGenerator.generateDataForBooking();
-        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        BookingClients bookingClients = new BookingClients();
         Integer idCreatedBooking = 0;
 
         try {
 
             ResponseBookingDTO response = step("Make request create a new booking", () ->
-                    given()
-                            .spec(createBookingRequestSpec)
-                            .body(booking)
-                            .when()
-                            .post("/booking")
-                            .then()
-                            .spec(createBookingResponseSpec)
-                            .extract()
-                            .as(ResponseBookingDTO.class));
+                    bookingClients.createNewBooking(booking));
 
             step("Check response a new booking", () -> {
                 assertThat(response.getBookingid()).isNotNull();
@@ -222,14 +166,14 @@ public class RestfulBookingTests extends TestBase {
             });
 
             step("Check the created booking is exist", () ->
-                    usefulMethod.getBookingById(response.getBookingid())
+                    bookingClients.getBookingById(response.getBookingid())
             );
 
             idCreatedBooking = response.getBookingid();
         } finally {
             Integer idForDeletingBooking = idCreatedBooking;
             step("Clean up created test data", () ->
-                    usefulMethod.deleteBooking(idForDeletingBooking));
+                    bookingClients.deleteBooking(idForDeletingBooking));
         }
     }
 
@@ -244,34 +188,19 @@ public class RestfulBookingTests extends TestBase {
         BookingDataGenerator bookingDataUpdated = new BookingDataGenerator();
         BookingDTO bookingInitial = bookingDataInitial.generateDataForBooking();
         BookingDTO bookingUpdated = bookingDataUpdated.generateDataForBooking();
-        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        BookingClients bookingClients = new BookingClients();
         Integer idCreatedBooking = 0;
 
         try {
 
             ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
-                    given()
-                            .spec(createBookingRequestSpec)
-                            .body(bookingInitial)
-                            .when()
-                            .post("/booking")
-                            .then()
-                            .spec(createBookingResponseSpec)
-                            .extract()
-                            .as(ResponseBookingDTO.class));
+                    bookingClients.createNewBooking(bookingInitial));
 
             idCreatedBooking = responseCreatedBooking.getBookingid();
             Integer finalId = idCreatedBooking;
 
             BookingDTO responseUpdatedBooking = step("Full updates a booking", () ->
-                    given()
-                            .spec(bookingWithTokenRequestSpec)
-                            .body(bookingUpdated)
-                            .when()
-                            .put("/booking/" + finalId)
-                            .then()
-                            .spec(successfulBookingResponseSpec)
-                            .extract().as(BookingDTO.class));
+                    bookingClients.fullUpdatesBooking(bookingUpdated, finalId));
 
             step("Check response full update a booking", () -> {
                 assertThat(responseUpdatedBooking.getFirstname()).isEqualTo(bookingUpdated.getFirstname());
@@ -284,13 +213,7 @@ public class RestfulBookingTests extends TestBase {
             });
 
             BookingDTO getResponse = step("Make request get updated booking by id", () ->
-                    given()
-                            .spec(bookingWithoutTokenRequestSpec)
-                            .when()
-                            .get("/booking/" + finalId)
-                            .then()
-                            .spec(successfulBookingResponseSpec)
-                            .extract().as(BookingDTO.class));
+                    bookingClients.getBookingById(finalId));
 
             step("Check current values response get updated booking by id", () -> {
                 assertThat(getResponse.getFirstname()).isEqualTo(bookingUpdated.getFirstname());
@@ -305,7 +228,7 @@ public class RestfulBookingTests extends TestBase {
         } finally {
             Integer finalId = idCreatedBooking;
             step("Clean up created test data", () ->
-                    usefulMethod.deleteBooking(finalId)
+                    bookingClients.deleteBooking(finalId)
             );
         }
     }
@@ -321,34 +244,19 @@ public class RestfulBookingTests extends TestBase {
         BookingDataGenerator bookingDataPatch = new BookingDataGenerator();
         BookingDTO bookingInitial = bookingDataInitial.generateDataForBooking();
         BookingDTO bookingPatch = bookingDataPatch.partialUpdateBookingByPriceAndBookingDates();
-        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        BookingClients bookingClients = new BookingClients();
         Integer idCreatedBooking = 0;
 
         try {
 
             ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
-                    given()
-                            .spec(createBookingRequestSpec)
-                            .body(bookingInitial)
-                            .when()
-                            .post("/booking")
-                            .then()
-                            .spec(createBookingResponseSpec)
-                            .extract()
-                            .as(ResponseBookingDTO.class));
+                    bookingClients.createNewBooking(bookingInitial));
 
             idCreatedBooking = responseCreatedBooking.getBookingid();
             Integer finalId = idCreatedBooking;
 
             BookingDTO responseUpdatedBooking = step("Partial updates a booking", () ->
-                    given()
-                            .spec(bookingWithTokenRequestSpec)
-                            .body(bookingPatch)
-                            .when()
-                            .patch("/booking/" + finalId)
-                            .then()
-                            .spec(successfulBookingResponseSpec)
-                            .extract().as(BookingDTO.class));
+                    bookingClients.partialUpdatesBooking(bookingPatch, finalId));
 
             step("Check response partial update a booking", () -> {
                 assertThat(responseUpdatedBooking.getFirstname()).isEqualTo(bookingInitial.getFirstname());
@@ -361,13 +269,7 @@ public class RestfulBookingTests extends TestBase {
             });
 
             BookingDTO getResponse = step("Make request get updated booking by id", () ->
-                    given()
-                            .spec(bookingWithoutTokenRequestSpec)
-                            .when()
-                            .get("/booking/" + finalId)
-                            .then()
-                            .spec(successfulBookingResponseSpec)
-                            .extract().as(BookingDTO.class));
+                    bookingClients.getBookingById(finalId));
 
             step("Check current values response get updated booking by id", () -> {
                 assertThat(getResponse.getFirstname()).isEqualTo(bookingInitial.getFirstname());
@@ -382,7 +284,7 @@ public class RestfulBookingTests extends TestBase {
         } finally {
             Integer finalId = idCreatedBooking;
             step("Clean up created test data", () ->
-                    usefulMethod.deleteBooking(finalId)
+                    bookingClients.deleteBooking(finalId)
             );
         }
     }
@@ -396,38 +298,20 @@ public class RestfulBookingTests extends TestBase {
 
         BookingDataGenerator bookingDataGenerator = new BookingDataGenerator();
         BookingDTO booking = bookingDataGenerator.generateDataForBooking();
-        UsefulMethodsForTests usefulMethod = new UsefulMethodsForTests();
+        BookingClients bookingClients = new BookingClients();
 
         ResponseBookingDTO response = step("Make request create a new booking", () ->
-                given()
-                        .spec(createBookingRequestSpec)
-                        .body(booking)
-                        .when()
-                        .post("/booking")
-                        .then()
-                        .spec(createBookingResponseSpec)
-                        .extract()
-                        .as(ResponseBookingDTO.class));
+                bookingClients.createNewBooking(booking));
 
         step("Check the created booking is exist", () ->
-                usefulMethod.getBookingById(response.getBookingid())
+                bookingClients.getBookingById(response.getBookingid())
         );
 
         step("Deletes a created booking", () ->
-                given()
-                        .spec(bookingWithTokenRequestSpec)
-                        .when()
-                        .delete("/booking/" + response.getBookingid())
-                        .then()
-                        .spec(createdStatusBookingResponseSpec));
+                bookingClients.deleteBooking(response.getBookingid()));
 
         step("Check the deleted booking is not exist", () ->
-                given()
-                        .spec(bookingWithoutTokenRequestSpec)
-                        .when()
-                        .get("/booking/" + response.getBookingid())
-                        .then()
-                        .spec(notFoundBookingResponseSpec)
+                bookingClients.notFoundGetBookingById(response.getBookingid())
         );
     }
 
