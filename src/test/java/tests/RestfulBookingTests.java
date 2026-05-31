@@ -20,7 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RestfulBookingTests extends TestBase {
 
     @Test
-    @Tag("CreateToken")
+    @DisplayName("Get health check endpoint")
+    @Description("A simple health check endpoint to confirm whether the API is up and running.")
+    public void shouldReturnHealthCheckEndpoint() {
+        BookingClients bookingClients = new BookingClients();
+
+        step("Make a request get a health check endpoint and check response", bookingClients::getHealthCheckEndpoint);
+    }
+
+    @Test
     @Tag("PositiveTests")
     @DisplayName("Creates a new auth token")
     @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
@@ -41,9 +49,9 @@ public class RestfulBookingTests extends TestBase {
     public void shouldReturnAllBookings() {
         BookingClients bookingClients = new BookingClients();
 
-        ResponseBookingsIdsDTO[] response = step("Make request get all bookings", bookingClients::getAllBookings);
+        ResponseBookingsIdsDTO[] response = step("Make a request get all bookings", bookingClients::getAllBookings);
 
-        step("Check response get all bookings", () ->
+        step("Check a response get all bookings", () ->
                 assertThat(response[0].getBookingid()).isNotNull());
     }
 
@@ -71,11 +79,11 @@ public class RestfulBookingTests extends TestBase {
                 }
             });
 
-            ResponseBookingsIdsDTO[] response = step("Make request get bookings by full name", () ->
-                   bookingClients.getBookingsByFullName(bookingsOneUser.getFirst().getFirstname(),
-                           bookingsOneUser.getFirst().getLastname()));
+            ResponseBookingsIdsDTO[] response = step("Make a request get bookings by full name", () ->
+                    bookingClients.getBookingsByFullName(bookingsOneUser.getFirst().getFirstname(),
+                            bookingsOneUser.getFirst().getLastname()));
 
-            step("Check response get bookings by first name", () -> {
+            step("Check a response get bookings by first name", () -> {
                 assertThat(response.length).isEqualTo(numbersOfBookings);
                 for (ResponseBookingsIdsDTO element : response) {
                     assertThat(element.getBookingid()).isGreaterThan(0);
@@ -98,6 +106,24 @@ public class RestfulBookingTests extends TestBase {
 
     @Test
     @Tag("GetBookings")
+    @Tag("NegativeTests")
+    @DisplayName("Returns not found the bookings by full name")
+    @Description("Returns not found the bookings by full name")
+    public void shouldReturnNotFoundUserBookingsWhenGetBookingsByFilterFullName() {
+
+        BookingDataGenerator bookingDataGenerator = new BookingDataGenerator();
+        BookingDTO booking = bookingDataGenerator.generateDataForBooking();
+        BookingClients bookingClients = new BookingClients();
+
+        ResponseBookingsIdsDTO[] response = step("Make a request get bookings by full name: not found", () ->
+                bookingClients.getBookingsByFullName(booking.getFirstname(),
+                        booking.getLastname()));
+
+        step("Check a response get bookings by first name: not found", () -> assertThat(response).isNullOrEmpty());
+    }
+
+    @Test
+    @Tag("GetBookings")
     @Tag("PositiveTests")
     @DisplayName("Returns a booking by id")
     @Description("Returns a specific booking based upon the booking id provided")
@@ -116,10 +142,10 @@ public class RestfulBookingTests extends TestBase {
             idCreatedBooking = responseCreatedBooking.getBookingid();
             Integer finalId = idCreatedBooking;
 
-            BookingDTO response = step("Make request get booking by id", () ->
+            BookingDTO response = step("Make a request get booking by id", () ->
                     bookingClients.getBookingById(finalId));
 
-            step("Check response get booking by id", () -> {
+            step("Check a response get booking by id", () -> {
                 assertThat(response.getFirstname()).isEqualTo(booking.getFirstname());
                 assertThat(response.getLastname()).isEqualTo(booking.getLastname());
                 assertThat(response.getTotalprice()).isEqualTo(booking.getTotalprice());
@@ -138,6 +164,21 @@ public class RestfulBookingTests extends TestBase {
     }
 
     @Test
+    @Tag("GetBookings")
+    @Tag("NegativeTests")
+    @DisplayName("Returns not found booking by an unexist id")
+    @Description("Returns not found booking by an unexist id")
+    public void shouldReturnNotFoundBookingByFilterId() {
+
+        BookingClients bookingClients = new BookingClients();
+        Integer idUnexistBooking = 0;
+
+        step("Make a request get booking by an unexist id and check a response not found booking",
+                () -> bookingClients.notFoundGetBookingById(idUnexistBooking));
+
+    }
+
+    @Test
     @Tag("CreateBookings")
     @Tag("PositiveTests")
     @DisplayName("Creates a new booking")
@@ -151,7 +192,7 @@ public class RestfulBookingTests extends TestBase {
 
         try {
 
-            ResponseBookingDTO response = step("Make request create a new booking", () ->
+            ResponseBookingDTO response = step("Make a request create a new booking", () ->
                     bookingClients.createNewBooking(booking));
 
             step("Check response a new booking", () -> {
@@ -212,7 +253,7 @@ public class RestfulBookingTests extends TestBase {
                 assertThat(responseUpdatedBooking.getAdditionalneeds()).isEqualTo(bookingUpdated.getAdditionalneeds());
             });
 
-            BookingDTO getResponse = step("Make request get updated booking by id", () ->
+            BookingDTO getResponse = step("Make a request get updated booking by id", () ->
                     bookingClients.getBookingById(finalId));
 
             step("Check current values response get updated booking by id", () -> {
@@ -268,7 +309,7 @@ public class RestfulBookingTests extends TestBase {
                 assertThat(responseUpdatedBooking.getAdditionalneeds()).isEqualTo(bookingInitial.getAdditionalneeds());
             });
 
-            BookingDTO getResponse = step("Make request get updated booking by id", () ->
+            BookingDTO getResponse = step("Make a request get updated booking by id", () ->
                     bookingClients.getBookingById(finalId));
 
             step("Check current values response get updated booking by id", () -> {
@@ -300,7 +341,7 @@ public class RestfulBookingTests extends TestBase {
         BookingDTO booking = bookingDataGenerator.generateDataForBooking();
         BookingClients bookingClients = new BookingClients();
 
-        ResponseBookingDTO response = step("Make request create a new booking", () ->
+        ResponseBookingDTO response = step("Make a request create a new booking", () ->
                 bookingClients.createNewBooking(booking));
 
         step("Check the created booking is exist", () ->

@@ -16,6 +16,14 @@ import static api.specs.CreateBookingSpecs.createBookingResponseSpec;
 
 public class BookingClients {
 
+    public void getHealthCheckEndpoint() {
+        given()
+                .when()
+                .get("/ping")
+                .then()
+                .statusCode(201);
+    }
+
     public String createToken() {
         TokenData token = new TokenData();
         token.generateToken();

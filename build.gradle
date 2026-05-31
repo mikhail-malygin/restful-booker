@@ -36,6 +36,9 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
             "net.datafaker:datafaker:$datafakerVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -52,3 +55,53 @@ tasks.withType(Test).configureEach {
         }
     }
 }
+
+tasks.register('positiveTests', Test) {
+    testClassesDirs = tasks.named('test').get().testClassesDirs
+    classpath = tasks.named('test').get().classpath
+    useJUnitPlatform {
+        includeTags 'PositiveTests'
+    }
+}
+
+tasks.register('negativeTests', Test) {
+    testClassesDirs = tasks.named('test').get().testClassesDirs
+    classpath = tasks.named('test').get().classpath
+    useJUnitPlatform {
+        includeTags 'NegativeTests'
+    }
+}
+
+tasks.register('getBookings', Test) {
+    testClassesDirs = tasks.named('test').get().testClassesDirs
+    classpath = tasks.named('test').get().classpath
+    useJUnitPlatform {
+        includeTags 'GetBookings'
+    }
+}
+
+tasks.register('createBookings', Test) {
+    testClassesDirs = tasks.named('test').get().testClassesDirs
+    classpath = tasks.named('test').get().classpath
+    useJUnitPlatform {
+        includeTags 'CreateBookings'
+    }
+}
+
+tasks.register('updateBookings', Test) {
+    testClassesDirs = tasks.named('test').get().testClassesDirs
+    classpath = tasks.named('test').get().classpath
+    useJUnitPlatform {
+        includeTags 'UpdateBookings'
+    }
+}
+
+tasks.register('deleteBookings', Test) {
+    testClassesDirs = tasks.named('test').get().testClassesDirs
+    classpath = tasks.named('test').get().classpath
+    useJUnitPlatform {
+        includeTags 'DeleteBookings'
+    }
+}
+
+
