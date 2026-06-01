@@ -135,6 +135,7 @@ public class BookingClients extends TestBase {
     }
 
     public BookingDTO fullUpdatesBooking(BookingDTO bookingUpdated, Integer id) {
+
         return given()
                 .spec(bookingWithTokenRequestSpec)
                 .body(bookingUpdated)

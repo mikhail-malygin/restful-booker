@@ -395,14 +395,13 @@ public class RestfulBookingTests extends TestBase {
 
             step("Try to delete a created booking without a necessary auth token", () ->
                     bookingClients.deleteBookingWithoutAuthToken(response.getBookingid()));
+
         } finally {
             Integer finalId = idCreatedBooking;
             step("Clean up created test data", () ->
                     bookingClients.deleteBooking(finalId)
             );
         }
-
-
     }
 
 }
