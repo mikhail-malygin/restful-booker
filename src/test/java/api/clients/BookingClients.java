@@ -1,10 +1,7 @@
 package api.clients;
 
-import data.TokenData;
-import models.lombok.BookingDTO;
-import models.lombok.ResponseBookingDTO;
-import models.lombok.ResponseBookingsIdsDTO;
-import models.lombok.ResponseTokenDTO;
+import models.*;
+import tests.TestBase;
 
 import static api.specs.BookingSpecs.*;
 import static api.specs.BookingSpecs.successfulBookingResponseSpec;
@@ -14,7 +11,7 @@ import static io.restassured.RestAssured.given;
 import static api.specs.CreateBookingSpecs.createBookingRequestSpec;
 import static api.specs.CreateBookingSpecs.createBookingResponseSpec;
 
-public class BookingClients {
+public class BookingClients extends TestBase {
 
     public void getHealthCheckEndpoint() {
         given()
@@ -25,11 +22,14 @@ public class BookingClients {
     }
 
     public String createToken() {
-        TokenData token = new TokenData();
-        token.generateToken();
+
+        RequestTokenDTO authBody = new RequestTokenDTO();
+        authBody.setUsername(config.username());
+        authBody.setPassword(config.password());
+
         ResponseTokenDTO response = given()
                 .spec(getTokenRequestSpec)
-                .body(token)
+                .body(authBody)
                 .when()
                 .post("/auth")
                 .then()

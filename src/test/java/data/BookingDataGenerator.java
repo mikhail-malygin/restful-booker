@@ -2,7 +2,7 @@ package data;
 
 import lombok.Data;
 import lombok.Getter;
-import models.lombok.BookingDTO;
+import models.BookingDTO;
 import net.datafaker.Faker;
 
 import java.util.concurrent.TimeUnit;

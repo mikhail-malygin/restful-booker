@@ -16,7 +16,8 @@ def
         allureJunitVersion = '2.34.0',
         jacksonVersion = '2.21.2',
         allureRestAssuredVersion = '2.34.0',
-        datafakerVersion = '2.5.4'
+        datafakerVersion = '2.5.4',
+        ownerVersion = '1.0.12'
 
 allure {
     version = "$allureJunitVersion"
@@ -34,7 +35,8 @@ dependencies {
             "io.qameta.allure:allure-junit5:$allureJunitVersion",
             "io.qameta.allure:allure-rest-assured:$allureRestAssuredVersion",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-            "net.datafaker:datafaker:$datafakerVersion")
+            "net.datafaker:datafaker:$datafakerVersion",
+            "org.aeonbits.owner:owner:$ownerVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
