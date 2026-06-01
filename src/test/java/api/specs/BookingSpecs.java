@@ -44,4 +44,10 @@ public class BookingSpecs {
             .expectStatusCode(201)
             .build();
 
+    public static ResponseSpecification forbiddenResponseSpec = new ResponseSpecBuilder()
+            .log(STATUS)
+            .log(BODY)
+            .expectStatusCode(403)
+            .build();
+
 }

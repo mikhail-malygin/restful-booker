@@ -42,6 +42,21 @@ public class RestfulBookingTests extends TestBase {
     }
 
     @Test
+    @Tag("NegativeTests")
+    @DisplayName("Get bad credentials when try to create token with wrong password")
+    @Description("Get bad credentials when try to create token with wrong password")
+    public void shouldReturnBadCredentialsWhenTryCreateTokenWithWrongPassword() {
+        BookingClients bookingClients = new BookingClients();
+
+        String response = step("Make a request creates a new token with wrong password",
+                bookingClients::tryCreateTokenWithWrongPassword);
+
+        step("Check a response creates a new token with wrong password", () ->
+                assertThat(response).isEqualTo("Bad credentials"));
+
+    }
+
+    @Test
     @Tag("GetBookings")
     @Tag("PositiveTests")
     @DisplayName("Returns all bookings ids")
@@ -354,6 +369,40 @@ public class RestfulBookingTests extends TestBase {
         step("Check the deleted booking is not exist", () ->
                 bookingClients.notFoundGetBookingById(response.getBookingid())
         );
+    }
+
+    @Test
+    @Tag("DeleteBookings")
+    @Tag("NegativeTests")
+    @DisplayName("Try to delete bookings without an auth token")
+    @Description("Try to delete bookings without an auth token")
+    public void shouldForbidDeleteBookingWithoutAuthToken() {
+
+        BookingDataGenerator bookingDataGenerator = new BookingDataGenerator();
+        BookingDTO booking = bookingDataGenerator.generateDataForBooking();
+        BookingClients bookingClients = new BookingClients();
+        Integer idCreatedBooking = 0;
+
+        try {
+            ResponseBookingDTO response = step("Make a request create a new booking", () ->
+                    bookingClients.createNewBooking(booking));
+
+            idCreatedBooking = response.getBookingid();
+
+            step("Check the created booking is exist", () ->
+                    bookingClients.getBookingById(response.getBookingid())
+            );
+
+            step("Try to delete a created booking without a necessary auth token", () ->
+                    bookingClients.deleteBookingWithoutAuthToken(response.getBookingid()));
+        } finally {
+            Integer finalId = idCreatedBooking;
+            step("Clean up created test data", () ->
+                    bookingClients.deleteBooking(finalId)
+            );
+        }
+
+
     }
 
 }

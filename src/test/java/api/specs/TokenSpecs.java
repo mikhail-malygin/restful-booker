@@ -24,4 +24,5 @@ public class TokenSpecs {
             .log(BODY)
             .expectStatusCode(200)
             .build();
+
 }

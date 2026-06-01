@@ -40,6 +40,26 @@ public class BookingClients extends TestBase {
         return response.getToken();
     }
 
+    public String tryCreateTokenWithWrongPassword() {
+
+        RequestTokenDTO authBody = new RequestTokenDTO();
+        authBody.setUsername(config.username());
+        authBody.setPassword(config.password() + "1");
+
+        ResponseBadCredentialsTokenDTO response = given()
+                .spec(getTokenRequestSpec)
+                .body(authBody)
+                .when()
+                .post("/auth")
+                .then()
+                .spec(getTokenResponseSpec)
+                .extract()
+                .as(ResponseBadCredentialsTokenDTO.class);
+
+        return response.getReason();
+
+    }
+
     public ResponseBookingDTO createNewBooking(BookingDTO booking) {
 
         return given()
@@ -61,6 +81,16 @@ public class BookingClients extends TestBase {
                 .delete("/booking/" + id)
                 .then()
                 .spec(createdStatusBookingResponseSpec);
+    }
+
+    public void deleteBookingWithoutAuthToken(Integer id) {
+
+        given()
+                .spec(bookingWithoutTokenRequestSpec)
+                .when()
+                .delete("/booking/" + id)
+                .then()
+                .spec(forbiddenResponseSpec);
     }
 
     public ResponseBookingsIdsDTO[] getAllBookings() {
