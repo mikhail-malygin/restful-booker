@@ -4,8 +4,8 @@ import api.clients.BookingClients;
 import data.BookingDataGenerator;
 import io.qameta.allure.Description;
 import models.BookingDTO;
-import models.ResponseBookingsIdsDTO;
 import models.ResponseBookingDTO;
+import models.ResponseBookingsIdsDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ public class RestfulBookingTests extends TestBase {
         ResponseBookingsIdsDTO[] response = step("Make a request get all bookings", bookingClients::getAllBookings);
 
         step("Check a response get all bookings", () ->
-                assertThat(response[0].getBookingid()).isNotNull());
+                assertThat(response[0].bookingid()).isNotNull());
     }
 
     @Test
@@ -95,19 +95,19 @@ public class RestfulBookingTests extends TestBase {
             });
 
             ResponseBookingsIdsDTO[] response = step("Make a request get bookings by full name", () ->
-                    bookingClients.getBookingsByFullName(bookingsOneUser.getFirst().getFirstname(),
-                            bookingsOneUser.getFirst().getLastname()));
+                    bookingClients.getBookingsByFullName(bookingsOneUser.getFirst().firstname(),
+                            bookingsOneUser.getFirst().lastname()));
 
             step("Check a response get bookings by first name", () -> {
                 assertThat(response.length).isEqualTo(numbersOfBookings);
                 for (ResponseBookingsIdsDTO element : response) {
-                    assertThat(element.getBookingid()).isGreaterThan(0);
+                    assertThat(element.bookingid()).isGreaterThan(0);
                 }
             });
 
             step("Save booking ids for deleting created bookings", () -> {
                 for (ResponseBookingsIdsDTO element : response) {
-                    ids.add(element.getBookingid());
+                    ids.add(element.bookingid());
                 }
             });
         } finally {
@@ -131,8 +131,8 @@ public class RestfulBookingTests extends TestBase {
         BookingClients bookingClients = new BookingClients();
 
         ResponseBookingsIdsDTO[] response = step("Make a request get bookings by full name: not found", () ->
-                bookingClients.getBookingsByFullName(booking.getFirstname(),
-                        booking.getLastname()));
+                bookingClients.getBookingsByFullName(booking.firstname(),
+                        booking.lastname()));
 
         step("Check a response get bookings by first name: not found", () -> assertThat(response).isNullOrEmpty());
     }
@@ -154,20 +154,20 @@ public class RestfulBookingTests extends TestBase {
             ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
                     bookingClients.createNewBooking(booking));
 
-            idCreatedBooking = responseCreatedBooking.getBookingid();
+            idCreatedBooking = responseCreatedBooking.bookingid();
             Integer finalId = idCreatedBooking;
 
             BookingDTO response = step("Make a request get booking by id", () ->
                     bookingClients.getBookingById(finalId));
 
             step("Check a response get booking by id", () -> {
-                assertThat(response.getFirstname()).isEqualTo(booking.getFirstname());
-                assertThat(response.getLastname()).isEqualTo(booking.getLastname());
-                assertThat(response.getTotalprice()).isEqualTo(booking.getTotalprice());
-                assertThat(response.getDepositpaid()).isEqualTo(booking.getDepositpaid());
-                assertThat(response.getBookingdates().getCheckin()).isEqualTo(booking.getBookingdates().getCheckin());
-                assertThat(response.getBookingdates().getCheckout()).isEqualTo(booking.getBookingdates().getCheckout());
-                assertThat(response.getAdditionalneeds()).isEqualTo(booking.getAdditionalneeds());
+                assertThat(response.firstname()).isEqualTo(booking.firstname());
+                assertThat(response.lastname()).isEqualTo(booking.lastname());
+                assertThat(response.totalprice()).isEqualTo(booking.totalprice());
+                assertThat(response.depositpaid()).isEqualTo(booking.depositpaid());
+                assertThat(response.bookingdates().checkin()).isEqualTo(booking.bookingdates().checkin());
+                assertThat(response.bookingdates().checkout()).isEqualTo(booking.bookingdates().checkout());
+                assertThat(response.additionalneeds()).isEqualTo(booking.additionalneeds());
             });
 
         } finally {
@@ -211,21 +211,21 @@ public class RestfulBookingTests extends TestBase {
                     bookingClients.createNewBooking(booking));
 
             step("Check response a new booking", () -> {
-                assertThat(response.getBookingid()).isNotNull();
-                assertThat(response.getBooking().getFirstname()).isEqualTo(booking.getFirstname());
-                assertThat(response.getBooking().getLastname()).isEqualTo(booking.getLastname());
-                assertThat(response.getBooking().getTotalprice()).isEqualTo(booking.getTotalprice());
-                assertThat(response.getBooking().getDepositpaid()).isEqualTo(booking.getDepositpaid());
-                assertThat(response.getBooking().getBookingdates().getCheckin()).isEqualTo(booking.getBookingdates().getCheckin());
-                assertThat(response.getBooking().getBookingdates().getCheckout()).isEqualTo(booking.getBookingdates().getCheckout());
-                assertThat(response.getBooking().getAdditionalneeds()).isEqualTo(booking.getAdditionalneeds());
+                assertThat(response.bookingid()).isNotNull();
+                assertThat(response.booking().firstname()).isEqualTo(booking.firstname());
+                assertThat(response.booking().lastname()).isEqualTo(booking.lastname());
+                assertThat(response.booking().totalprice()).isEqualTo(booking.totalprice());
+                assertThat(response.booking().depositpaid()).isEqualTo(booking.depositpaid());
+                assertThat(response.booking().bookingdates().checkin()).isEqualTo(booking.bookingdates().checkin());
+                assertThat(response.booking().bookingdates().checkout()).isEqualTo(booking.bookingdates().checkout());
+                assertThat(response.booking().additionalneeds()).isEqualTo(booking.additionalneeds());
             });
 
             step("Check the created booking is exist", () ->
-                    bookingClients.getBookingById(response.getBookingid())
+                    bookingClients.getBookingById(response.bookingid())
             );
 
-            idCreatedBooking = response.getBookingid();
+            idCreatedBooking = response.bookingid();
         } finally {
             Integer idForDeletingBooking = idCreatedBooking;
             step("Clean up created test data", () ->
@@ -252,33 +252,33 @@ public class RestfulBookingTests extends TestBase {
             ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
                     bookingClients.createNewBooking(bookingInitial));
 
-            idCreatedBooking = responseCreatedBooking.getBookingid();
+            idCreatedBooking = responseCreatedBooking.bookingid();
             Integer finalId = idCreatedBooking;
 
             BookingDTO responseUpdatedBooking = step("Full updates a booking", () ->
                     bookingClients.fullUpdatesBooking(bookingUpdated, finalId));
 
             step("Check response full update a booking", () -> {
-                assertThat(responseUpdatedBooking.getFirstname()).isEqualTo(bookingUpdated.getFirstname());
-                assertThat(responseUpdatedBooking.getLastname()).isEqualTo(bookingUpdated.getLastname());
-                assertThat(responseUpdatedBooking.getTotalprice()).isEqualTo(bookingUpdated.getTotalprice());
-                assertThat(responseUpdatedBooking.getDepositpaid()).isEqualTo(bookingUpdated.getDepositpaid());
-                assertThat(responseUpdatedBooking.getBookingdates().getCheckin()).isEqualTo(bookingUpdated.getBookingdates().getCheckin());
-                assertThat(responseUpdatedBooking.getBookingdates().getCheckout()).isEqualTo(bookingUpdated.getBookingdates().getCheckout());
-                assertThat(responseUpdatedBooking.getAdditionalneeds()).isEqualTo(bookingUpdated.getAdditionalneeds());
+                assertThat(responseUpdatedBooking.firstname()).isEqualTo(bookingUpdated.firstname());
+                assertThat(responseUpdatedBooking.lastname()).isEqualTo(bookingUpdated.lastname());
+                assertThat(responseUpdatedBooking.totalprice()).isEqualTo(bookingUpdated.totalprice());
+                assertThat(responseUpdatedBooking.depositpaid()).isEqualTo(bookingUpdated.depositpaid());
+                assertThat(responseUpdatedBooking.bookingdates().checkin()).isEqualTo(bookingUpdated.bookingdates().checkin());
+                assertThat(responseUpdatedBooking.bookingdates().checkout()).isEqualTo(bookingUpdated.bookingdates().checkout());
+                assertThat(responseUpdatedBooking.additionalneeds()).isEqualTo(bookingUpdated.additionalneeds());
             });
 
             BookingDTO getResponse = step("Make a request get updated booking by id", () ->
                     bookingClients.getBookingById(finalId));
 
             step("Check current values response get updated booking by id", () -> {
-                assertThat(getResponse.getFirstname()).isEqualTo(bookingUpdated.getFirstname());
-                assertThat(getResponse.getLastname()).isEqualTo(bookingUpdated.getLastname());
-                assertThat(getResponse.getTotalprice()).isEqualTo(bookingUpdated.getTotalprice());
-                assertThat(getResponse.getDepositpaid()).isEqualTo(bookingUpdated.getDepositpaid());
-                assertThat(getResponse.getBookingdates().getCheckin()).isEqualTo(bookingUpdated.getBookingdates().getCheckin());
-                assertThat(getResponse.getBookingdates().getCheckout()).isEqualTo(bookingUpdated.getBookingdates().getCheckout());
-                assertThat(getResponse.getAdditionalneeds()).isEqualTo(bookingUpdated.getAdditionalneeds());
+                assertThat(getResponse.firstname()).isEqualTo(bookingUpdated.firstname());
+                assertThat(getResponse.lastname()).isEqualTo(bookingUpdated.lastname());
+                assertThat(getResponse.totalprice()).isEqualTo(bookingUpdated.totalprice());
+                assertThat(getResponse.depositpaid()).isEqualTo(bookingUpdated.depositpaid());
+                assertThat(getResponse.bookingdates().checkin()).isEqualTo(bookingUpdated.bookingdates().checkin());
+                assertThat(getResponse.bookingdates().checkout()).isEqualTo(bookingUpdated.bookingdates().checkout());
+                assertThat(getResponse.additionalneeds()).isEqualTo(bookingUpdated.additionalneeds());
             });
 
         } finally {
@@ -308,33 +308,33 @@ public class RestfulBookingTests extends TestBase {
             ResponseBookingDTO responseCreatedBooking = step("Create a new booking for test", () ->
                     bookingClients.createNewBooking(bookingInitial));
 
-            idCreatedBooking = responseCreatedBooking.getBookingid();
+            idCreatedBooking = responseCreatedBooking.bookingid();
             Integer finalId = idCreatedBooking;
 
             BookingDTO responseUpdatedBooking = step("Partial updates a booking", () ->
                     bookingClients.partialUpdatesBooking(bookingPatch, finalId));
 
             step("Check response partial update a booking", () -> {
-                assertThat(responseUpdatedBooking.getFirstname()).isEqualTo(bookingInitial.getFirstname());
-                assertThat(responseUpdatedBooking.getLastname()).isEqualTo(bookingInitial.getLastname());
-                assertThat(responseUpdatedBooking.getTotalprice()).isEqualTo(bookingPatch.getTotalprice());
-                assertThat(responseUpdatedBooking.getDepositpaid()).isEqualTo(bookingInitial.getDepositpaid());
-                assertThat(responseUpdatedBooking.getBookingdates().getCheckin()).isEqualTo(bookingPatch.getBookingdates().getCheckin());
-                assertThat(responseUpdatedBooking.getBookingdates().getCheckout()).isEqualTo(bookingPatch.getBookingdates().getCheckout());
-                assertThat(responseUpdatedBooking.getAdditionalneeds()).isEqualTo(bookingInitial.getAdditionalneeds());
+                assertThat(responseUpdatedBooking.firstname()).isEqualTo(bookingInitial.firstname());
+                assertThat(responseUpdatedBooking.lastname()).isEqualTo(bookingInitial.lastname());
+                assertThat(responseUpdatedBooking.totalprice()).isEqualTo(bookingPatch.totalprice());
+                assertThat(responseUpdatedBooking.depositpaid()).isEqualTo(bookingInitial.depositpaid());
+                assertThat(responseUpdatedBooking.bookingdates().checkin()).isEqualTo(bookingPatch.bookingdates().checkin());
+                assertThat(responseUpdatedBooking.bookingdates().checkout()).isEqualTo(bookingPatch.bookingdates().checkout());
+                assertThat(responseUpdatedBooking.additionalneeds()).isEqualTo(bookingInitial.additionalneeds());
             });
 
             BookingDTO getResponse = step("Make a request get updated booking by id", () ->
                     bookingClients.getBookingById(finalId));
 
             step("Check current values response get updated booking by id", () -> {
-                assertThat(getResponse.getFirstname()).isEqualTo(bookingInitial.getFirstname());
-                assertThat(getResponse.getLastname()).isEqualTo(bookingInitial.getLastname());
-                assertThat(getResponse.getTotalprice()).isEqualTo(bookingPatch.getTotalprice());
-                assertThat(getResponse.getDepositpaid()).isEqualTo(bookingInitial.getDepositpaid());
-                assertThat(getResponse.getBookingdates().getCheckin()).isEqualTo(bookingPatch.getBookingdates().getCheckin());
-                assertThat(getResponse.getBookingdates().getCheckout()).isEqualTo(bookingPatch.getBookingdates().getCheckout());
-                assertThat(getResponse.getAdditionalneeds()).isEqualTo(bookingInitial.getAdditionalneeds());
+                assertThat(getResponse.firstname()).isEqualTo(bookingInitial.firstname());
+                assertThat(getResponse.lastname()).isEqualTo(bookingInitial.lastname());
+                assertThat(getResponse.totalprice()).isEqualTo(bookingPatch.totalprice());
+                assertThat(getResponse.depositpaid()).isEqualTo(bookingInitial.depositpaid());
+                assertThat(getResponse.bookingdates().checkin()).isEqualTo(bookingPatch.bookingdates().checkin());
+                assertThat(getResponse.bookingdates().checkout()).isEqualTo(bookingPatch.bookingdates().checkout());
+                assertThat(getResponse.additionalneeds()).isEqualTo(bookingInitial.additionalneeds());
             });
 
         } finally {
@@ -360,14 +360,14 @@ public class RestfulBookingTests extends TestBase {
                 bookingClients.createNewBooking(booking));
 
         step("Check the created booking is exist", () ->
-                bookingClients.getBookingById(response.getBookingid())
+                bookingClients.getBookingById(response.bookingid())
         );
 
         step("Deletes a created booking", () ->
-                bookingClients.deleteBooking(response.getBookingid()));
+                bookingClients.deleteBooking(response.bookingid()));
 
         step("Check the deleted booking is not exist", () ->
-                bookingClients.notFoundGetBookingById(response.getBookingid())
+                bookingClients.notFoundGetBookingById(response.bookingid())
         );
     }
 
@@ -387,14 +387,14 @@ public class RestfulBookingTests extends TestBase {
             ResponseBookingDTO response = step("Make a request create a new booking", () ->
                     bookingClients.createNewBooking(booking));
 
-            idCreatedBooking = response.getBookingid();
+            idCreatedBooking = response.bookingid();
 
             step("Check the created booking is exist", () ->
-                    bookingClients.getBookingById(response.getBookingid())
+                    bookingClients.getBookingById(response.bookingid())
             );
 
             step("Try to delete a created booking without a necessary auth token", () ->
-                    bookingClients.deleteBookingWithoutAuthToken(response.getBookingid()));
+                    bookingClients.deleteBookingWithoutAuthToken(response.bookingid()));
 
         } finally {
             Integer finalId = idCreatedBooking;

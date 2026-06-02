@@ -23,9 +23,7 @@ public class BookingClients extends TestBase {
 
     public String createToken() {
 
-        RequestTokenDTO authBody = new RequestTokenDTO();
-        authBody.setUsername(config.username());
-        authBody.setPassword(config.password());
+        RequestTokenDTO authBody = new RequestTokenDTO(config.username(), config.password());
 
         ResponseTokenDTO response = given()
                 .spec(getTokenRequestSpec)
@@ -37,14 +35,12 @@ public class BookingClients extends TestBase {
                 .extract()
                 .as(ResponseTokenDTO.class);
 
-        return response.getToken();
+        return response.token();
     }
 
     public String tryCreateTokenWithWrongPassword() {
 
-        RequestTokenDTO authBody = new RequestTokenDTO();
-        authBody.setUsername(config.username());
-        authBody.setPassword(config.password() + "1");
+        RequestTokenDTO authBody = new RequestTokenDTO(config.username(), config.password() + "1");
 
         ResponseBadCredentialsTokenDTO response = given()
                 .spec(getTokenRequestSpec)
@@ -56,7 +52,7 @@ public class BookingClients extends TestBase {
                 .extract()
                 .as(ResponseBadCredentialsTokenDTO.class);
 
-        return response.getReason();
+        return response.reason();
 
     }
 

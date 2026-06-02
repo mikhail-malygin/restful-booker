@@ -1,13 +1,5 @@
 package models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ResponseBadCredentialsTokenDTO {
-
-    private String reason;
+public record ResponseBadCredentialsTokenDTO(
+        String reason) {
 }

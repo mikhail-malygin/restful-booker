@@ -1,35 +1,20 @@
 package models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record ResponseBookingDTO(
+        Integer bookingid,
+        Booking booking) {
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ResponseBookingDTO {
+    public record Booking(
+            String firstname,
+            String lastname,
+            Integer totalprice,
+            Boolean depositpaid,
+            BookingDates bookingdates,
+            String additionalneeds) {
 
-    private Integer bookingid;
-    private Booking booking;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Booking {
-        private String firstname;
-        private String lastname;
-        private Integer totalprice;
-        private Boolean depositpaid;
-        private BookingDates bookingdates;
-        private String additionalneeds;
-
-        @Data
-        @NoArgsConstructor
-        @AllArgsConstructor
-        public static class BookingDates {
-            private String checkin;
-            private String checkout;
+        public record BookingDates(
+                String checkin,
+                String checkout) {
         }
     }
-
 }
