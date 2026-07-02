@@ -11,10 +11,8 @@ import org.aeonbits.owner.Config;
 
 public interface AuthConfig extends Config {
     @Key("auth.username")
-    @DefaultValue("admin")
     String username();
 
     @Key("auth.password")
-    @DefaultValue("password123")
     String password();
 }
