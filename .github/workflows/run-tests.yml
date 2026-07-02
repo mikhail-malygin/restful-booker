@@ -26,10 +26,7 @@ jobs:
 
 
       - name: Run REST API Tests
-        env:
-          SECRET_USER: ${{ secrets.AUTH_USERNAME }}
-          SECRET_PASS: ${{ secrets.AUTH_PASSWORD }}
-        run: ./gradlew test -Dauth.username="$SECRET_USER" -Dauth.password="$SECRET_PASS"
+        run: ./gradlew test "-Dauth.username=${{secrets.AUTH_USERNAME}}" "-Dauth.password=${{secrets.AUTH_PASSWORD}}"
 
       - name: Upload Allure Results
         uses: actions/upload-artifact@v4
