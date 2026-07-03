@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Ellis",
+    "lastname": "Brown",
+    "totalprice": 66,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-11",
+        "checkout": "2026-08-21"
+    },
+    "additionalneeds": "Caesar Salad"
+}

@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 2785,
+    "booking": {
+        "firstname": "Joannie",
+        "lastname": "Ondricka",
+        "totalprice": 719,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2026-08-21",
+            "checkout": "2026-08-24"
+        },
+        "additionalneeds": "Pasta with Tomato and Basil"
+    }
+}

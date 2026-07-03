@@ -1,0 +1,4 @@
+METHOD: POST
+URL: https://restful-booker.herokuapp.com/booking
+BODY:
+{"firstname":"Joannie","lastname":"Ondricka","totalprice":661,"depositpaid":false,"bookingdates":{"checkin":"2026-08-12","checkout":"2026-09-08"},"additionalneeds":"Philadelphia Maki"}

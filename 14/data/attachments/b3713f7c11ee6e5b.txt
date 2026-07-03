@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 2740,
+    "booking": {
+        "firstname": "Ellis",
+        "lastname": "Brown",
+        "totalprice": 66,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-11",
+            "checkout": "2026-08-21"
+        },
+        "additionalneeds": "Caesar Salad"
+    }
+}

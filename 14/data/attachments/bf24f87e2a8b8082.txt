@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 2753,
+    "booking": {
+        "firstname": "Laurence",
+        "lastname": "Brekke",
+        "totalprice": 545,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-19",
+            "checkout": "2026-08-09"
+        },
+        "additionalneeds": "Pasta and Beans"
+    }
+}

@@ -1,0 +1,5 @@
+STATUS: 200
+BODY:
+{
+    "token": "99c2f93aa246c0c"
+}

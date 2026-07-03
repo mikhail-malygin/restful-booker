@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Ronnie",
+    "lastname": "Brown",
+    "totalprice": 1016,
+    "depositpaid": true,
+    "bookingdates": {
+        "checkin": "2026-08-13",
+        "checkout": "2026-08-10"
+    },
+    "additionalneeds": "Chicken Milanese"
+}
