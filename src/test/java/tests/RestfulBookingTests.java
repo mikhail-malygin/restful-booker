@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RestfulBookingTests extends TestBase {
 
     @Test
-    @DisplayName("Get health check endpoint")
+    @DisplayName("Gets health check endpoint")
     @Description("A simple health check endpoint to confirm whether the API is up and running.")
     public void shouldReturnHealthCheckEndpoint() {
         BookingClients bookingClients = new BookingClients();
@@ -30,7 +30,7 @@ public class RestfulBookingTests extends TestBase {
 
     @Test
     @Tag("PositiveTests")
-    @DisplayName("Creates a new auth token")
+    @DisplayName("Creates a new auth token with valid credentials")
     @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
     public void shouldReturnCreatedToken() {
         BookingClients bookingClients = new BookingClients();
@@ -43,9 +43,9 @@ public class RestfulBookingTests extends TestBase {
 
     @Test
     @Tag("NegativeTests")
-    @DisplayName("Get bad credentials when try to create token with wrong password")
-    @Description("Get bad credentials when try to create token with wrong password")
-    public void shouldReturnBadCredentialsWhenTryCreateTokenWithWrongPassword() {
+    @DisplayName("Gets bad credentials error when trying to create a token with an incorrect password")
+    @Description("Gets bad credentials error when trying to create a token with an incorrect password")
+    public void shouldReturnBadCredentialsWhenTryCreateTokenWithIncorrectPassword() {
         BookingClients bookingClients = new BookingClients();
 
         String response = step("Make a request creates a new token with wrong password",
