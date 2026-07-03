@@ -1,0 +1,4 @@
+METHOD: DELETE
+URL: https://restful-booker.herokuapp.com/booking/5326
+BODY:
+null

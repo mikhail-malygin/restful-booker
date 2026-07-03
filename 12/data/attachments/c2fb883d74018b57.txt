@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Dee",
+    "lastname": "Jacobson",
+    "totalprice": 1351,
+    "depositpaid": true,
+    "bookingdates": {
+        "checkin": "2026-08-04",
+        "checkout": "2026-08-27"
+    },
+    "additionalneeds": "Sushi"
+}

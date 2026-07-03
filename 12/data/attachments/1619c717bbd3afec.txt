@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Dane",
+    "lastname": "Schmeler",
+    "totalprice": 72,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-18",
+        "checkout": "2026-08-24"
+    },
+    "additionalneeds": "Bruschette with Tomato"
+}

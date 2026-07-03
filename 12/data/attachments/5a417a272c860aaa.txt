@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Weldon",
+    "lastname": "Roob",
+    "totalprice": 142,
+    "depositpaid": true,
+    "bookingdates": {
+        "checkin": "2026-08-31",
+        "checkout": "2026-09-10"
+    },
+    "additionalneeds": "Chicken Wings"
+}

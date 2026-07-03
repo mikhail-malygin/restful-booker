@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 5211,
+    "booking": {
+        "firstname": "Bev",
+        "lastname": "Ledner",
+        "totalprice": 948,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2026-08-14",
+            "checkout": "2026-08-03"
+        },
+        "additionalneeds": "Chicken Parm"
+    }
+}

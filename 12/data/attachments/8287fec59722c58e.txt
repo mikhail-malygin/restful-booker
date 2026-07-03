@@ -1,0 +1,4 @@
+METHOD: PATCH
+URL: https://restful-booker.herokuapp.com/booking/5277
+BODY:
+{"totalprice":1227,"bookingdates":{"checkin":"2026-08-23","checkout":"2026-08-17"}}

@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 5322,
+    "booking": {
+        "firstname": "Lezlie",
+        "lastname": "Bergstrom",
+        "totalprice": 720,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2026-08-18",
+            "checkout": "2026-08-12"
+        },
+        "additionalneeds": "Cheeseburger"
+    }
+}

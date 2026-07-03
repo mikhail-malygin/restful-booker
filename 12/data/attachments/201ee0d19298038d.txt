@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 5277,
+    "booking": {
+        "firstname": "Pat",
+        "lastname": "Altenwerth",
+        "totalprice": 610,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-11",
+            "checkout": "2026-09-10"
+        },
+        "additionalneeds": "Meatballs with Sauce"
+    }
+}

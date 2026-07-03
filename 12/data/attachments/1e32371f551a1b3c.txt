@@ -1,0 +1,4 @@
+METHOD: GET
+URL: https://restful-booker.herokuapp.com/booking/5235
+BODY:
+null
