@@ -33,14 +33,14 @@ jobs:
         if: always()
         with:
           name: allure-results
-          path: build/allure-results
+          path: allure-results
           retention-days: 5
 
       - name: Deploy Allure Report to GitHub Pages
         if: always()
         uses: simple-elf/allure-report-action@master
         with:
-          allure_results: build/allure-results
+          allure_results: allure-results
           allure_history: allure-history
           keep_reports: 10
 
