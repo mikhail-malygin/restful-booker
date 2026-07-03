@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1717,
+    "booking": {
+        "firstname": "Fairy",
+        "lastname": "White",
+        "totalprice": 1616,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-24",
+            "checkout": "2026-08-28"
+        },
+        "additionalneeds": "Pierogi"
+    }
+}
