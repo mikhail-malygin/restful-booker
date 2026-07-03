@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 4589,
+    "booking": {
+        "firstname": "Mikel",
+        "lastname": "Kuhic",
+        "totalprice": 850,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-05",
+            "checkout": "2026-09-09"
+        },
+        "additionalneeds": "Hummus"
+    }
+}

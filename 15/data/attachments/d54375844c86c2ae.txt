@@ -1,0 +1,4 @@
+METHOD: POST
+URL: https://restful-booker.herokuapp.com/booking
+BODY:
+{"firstname":"Milan","lastname":"Kub","totalprice":1859,"depositpaid":false,"bookingdates":{"checkin":"2026-08-22","checkout":"2026-08-30"},"additionalneeds":"Peking Duck"}

@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Amos",
+    "lastname": "Legros",
+    "totalprice": 1508,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-05",
+        "checkout": "2026-09-05"
+    },
+    "additionalneeds": "Pierogi"
+}

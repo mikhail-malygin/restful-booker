@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 4600,
+    "booking": {
+        "firstname": "Lannie",
+        "lastname": "Cartwright",
+        "totalprice": 1035,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-10",
+            "checkout": "2026-08-13"
+        },
+        "additionalneeds": "California Maki"
+    }
+}

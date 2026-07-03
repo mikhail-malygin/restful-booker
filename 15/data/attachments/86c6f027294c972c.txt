@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 4636,
+    "booking": {
+        "firstname": "Clifton",
+        "lastname": "Lowe",
+        "totalprice": 1977,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2026-08-26",
+            "checkout": "2026-09-07"
+        },
+        "additionalneeds": "Pork Sausage Roll"
+    }
+}

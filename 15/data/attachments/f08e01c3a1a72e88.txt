@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+[
+    {
+        "bookingid": 4633
+    },
+    {
+        "bookingid": 4635
+    },
+    {
+        "bookingid": 4636
+    },
+    {
+        "bookingid": 4638
+    }
+]

@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Daniel",
+    "lastname": "Oberbrunner",
+    "totalprice": 1547,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-30",
+        "checkout": "2026-08-15"
+    },
+    "additionalneeds": "Barbecue Ribs"
+}
