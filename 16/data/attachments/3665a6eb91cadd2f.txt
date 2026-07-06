@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 2107,
+    "booking": {
+        "firstname": "Vena",
+        "lastname": "Wyman",
+        "totalprice": 878,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-30",
+            "checkout": "2026-08-17"
+        },
+        "additionalneeds": "Salmon Nigiri"
+    }
+}

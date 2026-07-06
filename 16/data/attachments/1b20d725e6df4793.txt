@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 2121,
+    "booking": {
+        "firstname": "Edgar",
+        "lastname": "Kuvalis",
+        "totalprice": 959,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-18",
+            "checkout": "2026-08-31"
+        },
+        "additionalneeds": "Chicken Parm"
+    }
+}

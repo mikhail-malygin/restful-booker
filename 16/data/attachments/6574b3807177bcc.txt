@@ -1,0 +1,4 @@
+METHOD: POST
+URL: https://restful-booker.herokuapp.com/booking
+BODY:
+{"firstname":"Earleen","lastname":"Schaefer","totalprice":50,"depositpaid":true,"bookingdates":{"checkin":"2026-08-14","checkout":"2026-08-13"},"additionalneeds":"Risotto with Seafood"}

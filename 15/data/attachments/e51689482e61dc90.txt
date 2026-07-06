@@ -1,5 +1,0 @@
-STATUS: 200
-BODY:
-{
-    "token": "4220870fed373b5"
-}

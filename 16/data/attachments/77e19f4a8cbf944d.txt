@@ -1,0 +1,4 @@
+METHOD: POST
+URL: https://restful-booker.herokuapp.com/booking
+BODY:
+{"firstname":"Mellisa","lastname":"Considine","totalprice":1742,"depositpaid":true,"bookingdates":{"checkin":"2026-08-24","checkout":"2026-08-27"},"additionalneeds":"Bunny Chow"}

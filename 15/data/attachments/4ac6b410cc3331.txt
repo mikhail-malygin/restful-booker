@@ -1,4 +1,0 @@
-METHOD: POST
-URL: https://restful-booker.herokuapp.com/booking
-BODY:
-{"firstname":"Clifton","lastname":"Lowe","totalprice":495,"depositpaid":false,"bookingdates":{"checkin":"2026-08-11","checkout":"2026-08-26"},"additionalneeds":"Poutine"}
