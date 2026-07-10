@@ -15,6 +15,7 @@ Java | Git | Gradle 9.0 | RestAssured | JUnit 6 | Owner (aeonbits) | Allure Repo
 <p>
 <a href="https://www.java.com/"><img src="images/logo/java.svg" width="50" height="50"  alt="Java"/></a>
 <a href="https://gradle.org/"><img src="images/logo/gradle.svg" width="50" height="50"  alt="Gradle"/></a>
+<a href="https://rest-assured.io/"><img src="images/logo/restAssured.svg.svg" width="50" height="50"  alt="RestAssured"/></a>
 <a href="https://junit.org/"><img src="images/logo/junit.svg" width="50" height="50"  alt="JUnit 6"/></a>
 <a href="https://github.com/allure-framework/allure2"><img src="images/logo/allureReport.svg" width="50" height="50"  alt="Allure Reports"/></a>
 <a href="https://git-scm.com/"><img src="images/logo/git.svg" width="50" height="50"  alt="Git"/></a>
