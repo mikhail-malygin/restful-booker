@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1836,
+    "booking": {
+        "firstname": "Irving",
+        "lastname": "Armstrong",
+        "totalprice": 342,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-11",
+            "checkout": "2026-08-28"
+        },
+        "additionalneeds": "Ricotta Stuffed Ravioli"
+    }
+}

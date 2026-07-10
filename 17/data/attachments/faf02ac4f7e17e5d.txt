@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Moises",
+    "lastname": "Lehner",
+    "totalprice": 548,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-25",
+        "checkout": "2026-08-27"
+    },
+    "additionalneeds": "Cauliflower Penne"
+}

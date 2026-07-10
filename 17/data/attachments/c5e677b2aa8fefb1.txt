@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1851,
+    "booking": {
+        "firstname": "Vi",
+        "lastname": "Franecki",
+        "totalprice": 1082,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-20",
+            "checkout": "2026-08-16"
+        },
+        "additionalneeds": "Chilli con Carne"
+    }
+}

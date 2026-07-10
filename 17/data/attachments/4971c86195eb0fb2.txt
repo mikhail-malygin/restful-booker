@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1842,
+    "booking": {
+        "firstname": "Irving",
+        "lastname": "Armstrong",
+        "totalprice": 827,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2026-08-26",
+            "checkout": "2026-08-19"
+        },
+        "additionalneeds": "Fettuccine Alfredo"
+    }
+}

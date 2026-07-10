@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1837,
+    "booking": {
+        "firstname": "Arron",
+        "lastname": "Dickinson",
+        "totalprice": 627,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-31",
+            "checkout": "2026-08-25"
+        },
+        "additionalneeds": "Barbecue Ribs"
+    }
+}

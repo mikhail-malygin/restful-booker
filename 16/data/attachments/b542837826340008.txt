@@ -1,4 +1,0 @@
-METHOD: PUT
-URL: https://restful-booker.herokuapp.com/booking/2111
-BODY:
-{"firstname":"Roger","lastname":"Dibbert","totalprice":1526,"depositpaid":false,"bookingdates":{"checkin":"2026-08-22","checkout":"2026-08-31"},"additionalneeds":"Pierogi"}

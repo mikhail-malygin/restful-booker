@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Carolee",
+    "lastname": "Nicolas",
+    "totalprice": 1050,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-19",
+        "checkout": "2026-09-04"
+    },
+    "additionalneeds": "Tuna Sashimi"
+}

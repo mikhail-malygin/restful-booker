@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "George",
+    "lastname": "Hartmann",
+    "totalprice": 1297,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-28",
+        "checkout": "2026-08-11"
+    },
+    "additionalneeds": "Salmon Nigiri"
+}

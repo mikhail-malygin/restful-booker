@@ -1,0 +1,13 @@
+STATUS: 200
+BODY:
+{
+    "firstname": "Antone",
+    "lastname": "Torp",
+    "totalprice": 537,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2026-08-14",
+        "checkout": "2026-08-29"
+    },
+    "additionalneeds": "Salmon Nigiri"
+}

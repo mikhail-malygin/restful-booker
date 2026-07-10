@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1849,
+    "booking": {
+        "firstname": "Carolee",
+        "lastname": "Nicolas",
+        "totalprice": 1621,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-31",
+            "checkout": "2026-08-25"
+        },
+        "additionalneeds": "Tuna Sashimi"
+    }
+}

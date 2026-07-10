@@ -1,0 +1,16 @@
+STATUS: 200
+BODY:
+{
+    "bookingid": 1839,
+    "booking": {
+        "firstname": "Moises",
+        "lastname": "Lehner",
+        "totalprice": 548,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2026-08-25",
+            "checkout": "2026-08-27"
+        },
+        "additionalneeds": "Cauliflower Penne"
+    }
+}

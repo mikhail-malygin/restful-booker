@@ -1,4 +1,0 @@
-METHOD: GET
-URL: https://restful-booker.herokuapp.com/booking?firstname=Vena&lastname=Wyman
-BODY:
-null
